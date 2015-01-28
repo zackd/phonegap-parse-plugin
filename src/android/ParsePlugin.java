@@ -118,7 +118,7 @@ public class ParsePlugin extends CordovaPlugin {
     private void getDeviceToken(final CallbackContext callbackContext) {
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
-                String deviceToken = ParseInstallation.getCurrentInstallation().get("deviceToken");
+                String deviceToken = (String) ParseInstallation.getCurrentInstallation().get("deviceToken");
                 callbackContext.success(deviceToken);
             }
         });
