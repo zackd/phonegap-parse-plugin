@@ -18,6 +18,7 @@ public class ParsePlugin extends CordovaPlugin {
     public static final String ACTION_GET_SUBSCRIPTIONS = "getSubscriptions";
     public static final String ACTION_SUBSCRIBE = "subscribe";
     public static final String ACTION_UNSUBSCRIBE = "unsubscribe";
+    public static final String ACTION_GET_DEVICE_TOKEN = "getDeviceToken";
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -45,6 +46,9 @@ public class ParsePlugin extends CordovaPlugin {
         if (action.equals(ACTION_UNSUBSCRIBE)) {
             this.unsubscribe(args.getString(0), callbackContext);
             return true;
+        }
+        if (action.equals(ACTION_GET_DEVICE_TOKEN)) {
+          this.getDeviceToken(callbackContext);
         }
         return false;
     }
@@ -111,5 +115,12 @@ public class ParsePlugin extends CordovaPlugin {
         });
     }
 
+    private void getDeviceToken(final CallbackContext callbackContext) {
+        cordova.getThreadPool().execute(new Runnable() {
+            public void run() {
+                String deviceToken = ParseInstallation.getCurrentInstallation().get("deviceToken");
+                callbackContext.success(deviceToken);
+            }
+        });
+    }
 }
-
