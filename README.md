@@ -57,6 +57,17 @@ parsePlugin.initialize(appId, clientKey, function() {
 
 ```
 
+If you want to use message handler on javascript side you have to declare your action in your config.xml,
+and your parse push message should include {action: 'com.myapp.myapp.MY_MESSAGE_NAME'}
+
+```
+<receiver android:name="org.apache.cordova.core.ParseReceiver">
+		<intent-filter>
+				<action android:name="com.myapp.myapp.MY_MESSAGE_NAME" />
+		</intent-filter>
+</receiver>
+```
+
 
 Usage
 -----
