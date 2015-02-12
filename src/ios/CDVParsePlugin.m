@@ -4,7 +4,20 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 
+static NSString *__listenerCallbackId = nil;
+static CDVParsePlugin *__listenerInstance = nil;
+
 @implementation CDVParsePlugin
+
++ (NSString *)listenCallbackId
+{
+    return __listenerCallbackId;
+}
+
++ (CDVParsePlugin *)listenerInstance
+{
+    return __listenerInstance;
+}
 
 - (void)initialize: (CDVInvokedUrlCommand*)command
 {
@@ -84,9 +97,39 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
+- (void)onMessage: (CDVInvokedUrlCommand *)command
+{
+    __listenerCallbackId = command.callbackId;
+    __listenerInstance = self;
+
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [pluginResult setKeepCallbackAsBool:YES];
+
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
++ (void)sendJavascript:(NSDictionary *)jsonObject
+{
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:jsonObject];
+
+    [pluginResult setKeepCallbackAsBool:YES];
+
+    NSString *callbackId = [CDVParsePlugin listenCallbackId];
+    CDVParsePlugin *listener = [CDVParsePlugin listenerInstance];
+
+    [listener.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+}
+
 @end
 
 @implementation AppDelegate (CDVParsePlugin)
+
+- (void)            application:(UIApplication *)application
+   didReceiveRemoteNotification:(NSDictionary *)userInfo
+         fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
+    [CDVParsePlugin sendJavascript:userInfo];
+}
 
 void MethodSwizzle(Class c, SEL originalSelector) {
     NSString *selectorString = NSStringFromSelector(originalSelector);

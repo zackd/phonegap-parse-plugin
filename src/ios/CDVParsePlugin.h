@@ -9,6 +9,11 @@
 - (void)getSubscriptions: (CDVInvokedUrlCommand *)command;
 - (void)subscribe: (CDVInvokedUrlCommand *)command;
 - (void)unsubscribe: (CDVInvokedUrlCommand *)command;
+- (void)onMessage: (CDVInvokedUrlCommand *)command;
+
++ (NSString *)listenCallbackId;
++ (CDVParsePlugin *)listenerInstance;
++ (void)sendJavascript: (NSDictionary *)jsonObject;
 
 @end
 

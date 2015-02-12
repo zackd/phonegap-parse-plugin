@@ -22,9 +22,14 @@
           <receiver android:name="com.parse.ParseBroadcastReceiver">
             <intent-filter>
               <action android:name="android.intent.action.BOOT_COMPLETED" />
-              <action android:name="android.intent.action.USER_PRESENT" />
+              <!-- <action android:name="android.intent.action.USER_PRESENT" /> -->
             </intent-filter>
           </receiver>
+            <receiver android:name="org.apache.cordova.core.ParseReceiver">
+                <intent-filter>
+                    <action android:name="com.sorun.sorun.NEW_MESSAGE" />
+                </intent-filter>
+            </receiver>
           <receiver android:name="com.parse.GcmBroadcastReceiver"
               android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
@@ -46,8 +51,10 @@
           <uses-permission android:name="$PACKAGE_NAME.permission.C2D_MESSAGE" />
         </config-file>
 
-        <source-file src="src/android/parse/Parse-1.3.8.jar" target-dir="libs" framework="true" />
+        <source-file src="src/android/parse/Parse-1.8.2.jar" target-dir="libs" framework="true" />
+        <source-file src="src/android/parse/bolts-android-1.1.4.jar" target-dir="libs" framework="true" />
         <source-file src="src/android/ParsePlugin.java" target-dir="src/org/apache/cordova/core" />
+        <source-file src="src/android/ParseReceiver.java" target-dir="src/org/apache/cordova/core" />
      </platform>
 
     <!-- ios -->

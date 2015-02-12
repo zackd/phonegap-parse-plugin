@@ -59,12 +59,13 @@ var parsePlugin = {
         );
     },
 
-    getDeviceToken: function (successCallback, errorCallback) {
+    onMessage: function(successCallback, errorCallback) {
+        console.log('on msg has been called');
         cordova.exec(
             successCallback,
             errorCallback,
             'ParsePlugin',
-            'getDeviceToken',
+            'onMessage',
             []
         );
     }
