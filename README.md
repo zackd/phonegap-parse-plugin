@@ -72,7 +72,7 @@ and your parse push message should include {action: 'com.myapp.myapp.MY_MESSAGE_
 Usage
 -----
 ```
-<script type="text/javascript>
+<script type="text/javascript">
 	parsePlugin.initialize(appId, clientKey, function() {
 		alert('success');
 	}, function(e) {
